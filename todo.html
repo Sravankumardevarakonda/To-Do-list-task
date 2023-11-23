@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    .completed {
+      text-decoration: line-through;
+    }
+
+    form {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    input {
+      flex: 1;
+      padding: 5px;
+    }
+
+    button {
+      margin-left: 10px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+  <title>To-Do List</title>
+</head>
+<body>
+
+  <h1>To-Do List</h1>
+
+  <ul id="taskList"></ul>
+
+  <form id="taskForm">
+    <input type="text" id="newTask" placeholder="New Task">
+    <button type="button" onclick="addTask()">Add Task</button>
+  </form>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      displayTasks();
+    });
+
+    function displayTasks() {
+      const taskList = document.getElementById("taskList");
+      taskList.innerHTML = "";
+
+      tasks.forEach(function (task) {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span class="${task.completed ? 'completed' : ''}">${task.text}</span>
+          <button onclick="toggleComplete(${task.id})">${task.completed ? 'Undo' : 'Complete'}</button>
+          <button onclick="deleteTask(${task.id})">Delete</button>
+        `;
+        taskList.appendChild(li);
+      });
+    }
+
+    function addTask() {
+      const newTaskInput = document.getElementById("newTask");
+      const newTaskText = newTaskInput.value.trim();
+
+      if (newTaskText === "") {
+        alert("Task cannot be empty!");
+        return;
+      }
+
+      tasks.push({ id: Date.now(), text: newTaskText, completed: false });
+      newTaskInput.value = "";
+
+      displayTasks();
+    }
+
+    function toggleComplete(id) {
+      tasks = tasks.map(function (task) {
+        return task.id === id ? { ...task, completed: !task.completed } : task;
+      });
+
+      displayTasks();
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(function (task) {
+        return task.id !== id;
+      });
+
+      displayTasks();
+    }
+
+    let tasks = [
+      { id: 1, text: "Learn HTML", completed: false },
+      { id: 2, text: "Learn CSS", completed: true },
+      { id: 3, text: "Learn JavaScript", completed: false }
+    ];
+  </script>
+
+</body>
+</html>
